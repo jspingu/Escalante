@@ -1,7 +1,19 @@
 package cat.pingu.escalante
 
-class CompilerProcess(val inputName: String, val outputName: String?): Runnable {
+import cat.pingu.escalante.error.CompilerError
+import cat.pingu.escalante.lex.Lexer
+import java.io.File
+
+class CompilerProcess(inputName: String, private val outputName: String?): Runnable {
+    private val input = File(inputName)
+
     override fun run() {
-        TODO("Not yet implemented")
+        if (!input.exists()) throw CompilerError("Input file does not exist")
+
+        val src = input.readText()
+
+        val lexer = Lexer(src)
+
+        println(lexer.getTokens())
     }
 }

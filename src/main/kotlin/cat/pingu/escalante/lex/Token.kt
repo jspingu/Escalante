@@ -1,6 +1,6 @@
 package cat.pingu.escalante.lex
 
-data class Token(val type: TokenType, val raw: String)
+data class Token(val type: TokenType, val raw: String, val line: Int)
 
 enum class TokenType {
     KEYWORD_STRING,

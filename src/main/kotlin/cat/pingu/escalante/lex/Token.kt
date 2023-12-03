@@ -12,7 +12,13 @@ enum class TokenType {
     LITERAL_TRUE,
     LITERAL_FALSE,
 
-    EQUALS,
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIVIDE,
+    MODULO,
+
+    ASSIGNMENT,
     DOT,
     OPAR,
     CPAR,

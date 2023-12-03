@@ -20,7 +20,12 @@ class Lexer(private var src: String) {
                 }
                 inString -> builder.append(char)
 
-                char == '=' -> parseCurrent(builder, char, TokenType.EQUALS)
+                char == '+' -> parseCurrent(builder, char, TokenType.PLUS)
+                char == '-' -> parseCurrent(builder, char, TokenType.MINUS)
+                char == '*' -> parseCurrent(builder, char, TokenType.MULTIPLY)
+                char == '/' -> parseCurrent(builder, char, TokenType.DIVIDE)
+                char == '%' -> parseCurrent(builder, char, TokenType.MODULO)
+                char == '=' -> parseCurrent(builder, char, TokenType.ASSIGNMENT)
                 char == '.' -> parseCurrent(builder, char, TokenType.DOT)
                 char == '(' -> parseCurrent(builder, char, TokenType.OPAR)
                 char == ')' -> parseCurrent(builder, char, TokenType.CPAR)

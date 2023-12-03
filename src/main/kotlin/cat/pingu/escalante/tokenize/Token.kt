@@ -1,4 +1,4 @@
-package cat.pingu.escalante.lex
+package cat.pingu.escalante.tokenize
 
 data class Token(val type: TokenType, val raw: String, val line: Int)
 

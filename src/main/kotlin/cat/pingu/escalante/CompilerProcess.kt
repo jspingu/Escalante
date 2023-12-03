@@ -1,8 +1,8 @@
 package cat.pingu.escalante
 
 import cat.pingu.escalante.error.ErrorHandler
-import cat.pingu.escalante.lex.Lexer
 import cat.pingu.escalante.parser.parse
+import cat.pingu.escalante.tokenize.Tokenizer
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -15,8 +15,8 @@ class CompilerProcess(inputName: String, private val outputName: String?): Runna
         val src = input.readText()
         ErrorHandler.src = src
 
-        val lexer = Lexer(src)
-        val tokens = lexer.getTokens()
+        val tokenizer = Tokenizer(src)
+        val tokens = tokenizer.getTokens()
 
         parse(tokens)
     }

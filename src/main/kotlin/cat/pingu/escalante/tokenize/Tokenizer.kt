@@ -1,8 +1,8 @@
-package cat.pingu.escalante.lex
+package cat.pingu.escalante.tokenize
 
 import cat.pingu.escalante.util.isInt
 
-class Lexer(private var src: String) {
+class Tokenizer(private var src: String) {
     private val tokens = mutableListOf<Token>()
 
     fun getTokens(): List<Token> {

@@ -1,11 +1,11 @@
 package cat.pingu.escalante.parser
 
 import cat.pingu.escalante.error.SyntaxError
-import cat.pingu.escalante.lex.Token
-import cat.pingu.escalante.lex.TokenType
-import cat.pingu.escalante.parser.statements.VariableDeclarationStatement
+import cat.pingu.escalante.parser.statements.VariableDeclaration
+import cat.pingu.escalante.tokenize.Token
+import cat.pingu.escalante.tokenize.TokenType
 
-val parsers = listOf(VariableDeclarationStatement())
+val parsers = listOf(VariableDeclaration())
 
 fun parse(tokens: List<Token>) {
     val buffer = mutableListOf<Token>()

@@ -1,9 +1,6 @@
 package cat.pingu.escalante.parser
 
-import cat.pingu.escalante.lex.Token
-import cat.pingu.escalante.lex.TokenType
-
-
+import cat.pingu.escalante.tokenize.Token
 
 abstract class Statement(private val syntax: List<Matchable>) {
     fun matches(tokens: List<Token>): Boolean {

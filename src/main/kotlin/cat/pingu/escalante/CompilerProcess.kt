@@ -18,6 +18,6 @@ class CompilerProcess(inputName: String, private val outputName: String?): Runna
         val tokenizer = Tokenizer(src)
         val tokens = tokenizer.getTokens()
 
-        parse(tokens)
+        println(parse(tokens))
     }
 }

@@ -20,6 +20,8 @@ object VariableDeclarationSyntax: Syntax<VariableDeclaration>(createSyntax {
     )
 }
 
-class VariableDeclaration(type: Token, name: Token, value: Statement): Statement() {
-
-}
+class VariableDeclaration(
+    private val type: Token,
+    private val name: Token,
+    private val value: Statement,
+): Statement()

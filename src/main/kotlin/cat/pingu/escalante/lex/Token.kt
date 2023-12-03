@@ -9,12 +9,14 @@ enum class TokenType {
 
     LITERAL_STRING,
     LITERAL_INT,
-    LITERAL_BOOL,
+    LITERAL_TRUE,
+    LITERAL_FALSE,
 
     EQUALS,
     DOT,
     OPAR,
     CPAR,
 
+    END,
     OTHER,
 }

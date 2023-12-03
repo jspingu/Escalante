@@ -8,9 +8,24 @@ class Lexer(private var src: String) {
     fun getTokens(): List<Token> {
         val builder = StringBuilder()
 
+        var inString = false
+
         for (char in src.toCharArray()) {
             when {
+                char == '"' && !inString -> inString = true
+                char == '"' && inString -> {
+                    tokens.add(Token(TokenType.LITERAL_STRING, builder.toString()))
+                    builder.clear()
+                    inString = false
+                }
+                inString -> builder.append(char)
+
                 char == '=' -> parseCurrent(builder, char, TokenType.EQUALS)
+                char == '.' -> parseCurrent(builder, char, TokenType.DOT)
+                char == '(' -> parseCurrent(builder, char, TokenType.OPAR)
+                char == ')' -> parseCurrent(builder, char, TokenType.CPAR)
+                char == '\n' -> parseCurrent(builder, char, TokenType.END)
+
                 char.isWhitespace() -> parseString(builder)
                 else -> builder.append(char)
             }
@@ -34,6 +49,8 @@ class Lexer(private var src: String) {
             string == "int" -> Token(TokenType.KEYWORD_INT, string)
             string == "string" -> Token(TokenType.KEYWORD_STRING, string)
             string == "bool" -> Token(TokenType.KEYWORD_BOOL, string)
+            string == "true" -> Token(TokenType.LITERAL_TRUE, string)
+            string == "false" -> Token(TokenType.LITERAL_FALSE, string)
             string.isInt() -> Token(TokenType.LITERAL_INT, string)
             else -> Token(TokenType.OTHER, string)
         }

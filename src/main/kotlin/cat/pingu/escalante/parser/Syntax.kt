@@ -3,7 +3,7 @@ package cat.pingu.escalante.parser
 import cat.pingu.escalante.tokenize.Token
 import cat.pingu.escalante.tokenize.TokenType
 
-abstract class Syntax<T: Statement>(private val syntax: MutableList<Matchable>) {
+abstract class Syntax<T: Parsed>(private val syntax: MutableList<Matchable>) {
     fun matches(tokens: List<Token>): Boolean {
         var clone = tokens.toList()
 
@@ -19,9 +19,6 @@ abstract class Syntax<T: Statement>(private val syntax: MutableList<Matchable>) 
 
     abstract fun create(tokens: List<Token>): T
 }
-
-fun parseStatement(tokens: List<Token>, from: Int = 0, to: Int = tokens.size) =
-    parseBuffer(tokens.subList(from, to))
 
 fun createSyntax(builder: SyntaxBuilder.() -> Unit) = SyntaxBuilder().apply(builder).syntax
 

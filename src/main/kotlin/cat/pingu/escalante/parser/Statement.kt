@@ -1,3 +1,6 @@
 package cat.pingu.escalante.parser
 
-abstract class Statement
+interface Parsed
+
+interface Statement: Parsed
+interface Expression: Parsed

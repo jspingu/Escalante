@@ -3,6 +3,7 @@ package cat.pingu.escalante
 import cat.pingu.escalante.error.ErrorHandler
 import cat.pingu.escalante.parser.parse
 import cat.pingu.escalante.tokenize.Tokenizer
+import com.google.gson.GsonBuilder
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -18,6 +19,10 @@ class CompilerProcess(inputName: String, private val outputName: String?): Runna
         val tokenizer = Tokenizer(src)
         val tokens = tokenizer.getTokens()
 
-        println(parse(tokens))
+        println(tokens)
+
+
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        println(gson.toJson(parse(tokens)))
     }
 }

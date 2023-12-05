@@ -44,5 +44,5 @@ fun parseBuffer(tokens: List<Token>, parsers: List<Syntax<out Parsed>>): Parsed 
         }
     }
 
-    throw SyntaxError("Unable to parse $tokens $parsers", tokens.first().line)
+    throw SyntaxError("Unable to parse '${tokens.joinToString(" ") { it.raw }}' with $parsers", tokens.first().line)
 }

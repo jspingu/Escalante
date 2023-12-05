@@ -1,6 +1,10 @@
 package cat.pingu.escalante.tokenize
 
-data class Token(val type: TokenType, val raw: String, val line: Int)
+data class Token(val type: TokenType, val raw: String, val line: Int) {
+    override fun toString(): String {
+        return "[$type: '$raw']"
+    }
+}
 
 enum class TokenType {
     KEYWORD_STRING,

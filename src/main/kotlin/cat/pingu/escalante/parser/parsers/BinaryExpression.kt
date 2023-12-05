@@ -2,24 +2,43 @@ package cat.pingu.escalante.parser.parsers
 
 import cat.pingu.escalante.parser.Expression
 import cat.pingu.escalante.parser.Syntax
-import cat.pingu.escalante.parser.createSyntax
+import cat.pingu.escalante.parser.parseExpression
 import cat.pingu.escalante.tokenize.Token
 import cat.pingu.escalante.tokenize.TokenType.*
 
-object BinaryExpressionSyntax: Syntax<BinaryExpression>(createSyntax {
-    statement(1) // TODO: parse this properly
+object BinaryExpressionSyntax: Syntax<BinaryExpression>({
+    any()
     then(PLUS, MINUS, MULTIPLY, DIVIDE, MODULO)
-    statement(1)
+    any()
 }) {
-    override fun create(tokens: List<Token>) = BinaryExpression(
-        tokens[0],
-        tokens[1],
-        tokens[2],
+    private val order = listOf(
+        listOf(PLUS, MINUS),
+        listOf(MULTIPLY, DIVIDE, MODULO),
     )
+
+    override fun create(tokens: List<Token>): BinaryExpression {
+        val types = tokens.map { it.type }
+
+        var operationIndex = -1
+        loop@ for (operations in order) {
+            for ((index, type) in types.withIndex().reversed()) {
+                if (!operations.contains(type)) continue
+
+                operationIndex = index
+                break@loop
+            }
+        }
+
+        return BinaryExpression(
+            parseExpression(tokens, to = operationIndex),
+            tokens[operationIndex],
+            parseExpression(tokens, from = operationIndex + 1),
+        )
+    }
 }
 
 data class BinaryExpression(
-    private val left: Token,
+    private val left: Expression,
     private val operator: Token,
-    private val right: Token,
+    private val right: Expression,
 ): Expression

@@ -1,14 +1,17 @@
 package cat.pingu.escalante.parser.parsers
 
-import cat.pingu.escalante.parser.*
+import cat.pingu.escalante.parser.Expression
+import cat.pingu.escalante.parser.Statement
+import cat.pingu.escalante.parser.Syntax
+import cat.pingu.escalante.parser.parseExpression
 import cat.pingu.escalante.tokenize.Token
 import cat.pingu.escalante.tokenize.TokenType.*
 
-object VariableDeclarationSyntax: Syntax<VariableDeclaration>(createSyntax {
+object VariableDeclarationSyntax: Syntax<VariableDeclaration>({
     then(KEYWORD_STRING, KEYWORD_INT, KEYWORD_BOOL)
     then(OTHER)
     then(ASSIGNMENT)
-    statement()
+    any()
 }) {
     override fun create(tokens: List<Token>) = VariableDeclaration(
         tokens[0],

@@ -28,6 +28,7 @@ class Tokenizer(private var src: String) {
                 char == '%' -> parseCurrent(builder, char, TokenType.MODULO, line)
                 char == '=' -> parseCurrent(builder, char, TokenType.ASSIGNMENT, line)
                 char == '.' -> parseCurrent(builder, char, TokenType.DOT, line)
+                char == ',' -> parseCurrent(builder, char, TokenType.COMMA, line)
                 char == '(' -> parseCurrent(builder, char, TokenType.OPAR, line)
                 char == ')' -> parseCurrent(builder, char, TokenType.CPAR, line)
                 char == '\n' -> {

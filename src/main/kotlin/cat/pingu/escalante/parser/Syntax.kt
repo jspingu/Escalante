@@ -2,6 +2,8 @@ package cat.pingu.escalante.parser
 
 import cat.pingu.escalante.tokenize.Token
 import cat.pingu.escalante.tokenize.TokenType
+import cat.pingu.escalante.tokenize.TokenType.CPAR
+import cat.pingu.escalante.tokenize.TokenType.OPAR
 
 abstract class Syntax<T: Parsed>(private val check: Matcher.() -> Unit) {
     abstract fun create(tokens: List<Token>): T
@@ -11,10 +13,9 @@ abstract class Syntax<T: Parsed>(private val check: Matcher.() -> Unit) {
 
 //fun matcher(builder: MatchBuilder.(tokens: List<Token>) -> Unit) = MatchBuilder().apply(builder).syntax
 
-class Matcher(val tokens: List<Token>) {
+class Matcher(private val tokens: List<Token>) {
     var matches = true
     private var index = 0
-    val types get() = tokens.map { it.type }
 
     fun any() {
         if (index++ >= tokens.size) {
@@ -30,6 +31,22 @@ class Matcher(val tokens: List<Token>) {
 
     fun and(boolean: Boolean) {
         if (!boolean) matches = false
+    }
+
+    fun matchingParenthesis(index: Int): Int {
+        var depth = 0
+
+        for (i in index-1..<tokens.size) {
+            when (tokens[i].type) {
+                OPAR -> depth++
+                CPAR -> depth--
+                else -> continue
+            }
+
+            if (depth == 0) return i
+        }
+
+        return -1
     }
 }
 

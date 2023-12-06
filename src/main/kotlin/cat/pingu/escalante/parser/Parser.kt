@@ -3,12 +3,13 @@ package cat.pingu.escalante.parser
 import cat.pingu.escalante.error.SyntaxError
 import cat.pingu.escalante.parser.parsers.BinaryExpressionSyntax
 import cat.pingu.escalante.parser.parsers.ConstantExpressionSyntax
+import cat.pingu.escalante.parser.parsers.FunctionCallSyntax
 import cat.pingu.escalante.parser.parsers.VariableDeclarationSyntax
 import cat.pingu.escalante.tokenize.Token
 import cat.pingu.escalante.tokenize.TokenType
 
-val statementParsers = listOf(VariableDeclarationSyntax)
-val expressionParsers = listOf(BinaryExpressionSyntax, ConstantExpressionSyntax)
+val statementParsers = listOf(VariableDeclarationSyntax, FunctionCallSyntax)
+val expressionParsers = listOf(BinaryExpressionSyntax, FunctionCallSyntax, ConstantExpressionSyntax)
 
 fun parse(tokens: List<Token>): List<Statement> {
     val statements = mutableListOf<Statement>()

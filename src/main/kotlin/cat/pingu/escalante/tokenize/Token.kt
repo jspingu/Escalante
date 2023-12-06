@@ -24,6 +24,7 @@ enum class TokenType {
 
     ASSIGNMENT,
     DOT,
+    COMMA,
     OPAR,
     CPAR,
 

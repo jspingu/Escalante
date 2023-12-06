@@ -23,10 +23,12 @@ class JVM: Compilable {
         visit(V1_8, ACC_PUBLIC, "Main", "", "java/lang/Object", arrayOf())
     }
     private val flow = classNode
-        .visitMethod(ACC_PUBLIC or ACC_STATIC, "main", "([Ljava/lang/String;)V", "", arrayOf()) as MethodNode
+        .visitMethod(ACC_PUBLIC or ACC_STATIC, "main", "([Ljava/lang/String;)V", null, arrayOf()) as MethodNode
+    private var locals = 1
 
     override fun compile(output: File, ast: List<Statement>) {
         ast.forEach { visitStatement(it) }
+        flow.visitInsn(RETURN)
 
         writeJar(output)
     }
@@ -50,8 +52,8 @@ class JVM: Compilable {
         visitExpression(statement.value)
 
         when (statement.type.type) {
-            KEYWORD_INT, KEYWORD_BOOL -> flow.visitInsn(ISTORE)
-            KEYWORD_STRING -> flow.visitInsn(ASTORE)
+            KEYWORD_INT, KEYWORD_BOOL -> flow.visitVarInsn(ISTORE, ++locals)
+            KEYWORD_STRING -> flow.visitVarInsn(ASTORE, ++locals)
             else -> throw IllegalStateException()
         }
     }
@@ -88,6 +90,7 @@ class JVM: Compilable {
 
         val manifestBytes = """
             Main-Class: ${classNode.name.replace("/", ".")}
+            
         """.trimIndent().toByteArray()
 
         val stream = ZipOutputStream(FileOutputStream(output))

@@ -1,7 +1,5 @@
 package cat.pingu.escalante.tokenize
 
-import cat.pingu.escalante.util.isInt
-
 class Tokenizer(private var src: String) {
     private val tokens = mutableListOf<Token>()
 
@@ -61,7 +59,7 @@ class Tokenizer(private var src: String) {
             string == "bool" -> Token(TokenType.KEYWORD_BOOL, string, line)
             string == "true" -> Token(TokenType.LITERAL_TRUE, string, line)
             string == "false" -> Token(TokenType.LITERAL_FALSE, string, line)
-            string.isInt() -> Token(TokenType.LITERAL_INT, string, line)
+            string.toIntOrNull() != null -> Token(TokenType.LITERAL_INT, string, line)
             else -> Token(TokenType.OTHER, string, line)
         }
 

@@ -14,7 +14,8 @@ dependencies {
     testImplementation(kotlin("test"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.6")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.ow2.asm:asm:9.6")
+    implementation("org.ow2.asm:asm-tree:9.6")
 }
 
 tasks.test {

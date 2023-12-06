@@ -21,7 +21,7 @@ object VariableDeclarationSyntax: Syntax<VariableDeclaration>({
 }
 
 data class VariableDeclaration(
-    private val type: Token,
-    private val name: Token,
-    private val value: Expression,
+    val type: Token,
+    val name: Token,
+    val value: Expression,
 ): Statement

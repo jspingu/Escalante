@@ -38,7 +38,7 @@ object BinaryExpressionSyntax: Syntax<BinaryExpression>({
 }
 
 data class BinaryExpression(
-    private val left: Expression,
-    private val operator: Token,
-    private val right: Expression,
+    val left: Expression,
+    val operator: Token,
+    val right: Expression,
 ): Expression

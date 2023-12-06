@@ -11,4 +11,4 @@ object ConstantExpressionSyntax: Syntax<ConstantExpression>({
     override fun create(tokens: List<Token>) = ConstantExpression(tokens[0])
 }
 
-data class ConstantExpression(private val value: Token): Expression
+data class ConstantExpression(val value: Token): Expression

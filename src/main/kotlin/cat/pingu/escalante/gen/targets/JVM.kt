@@ -5,6 +5,7 @@ import cat.pingu.escalante.parser.Expression
 import cat.pingu.escalante.parser.Statement
 import cat.pingu.escalante.parser.parsers.BinaryExpression
 import cat.pingu.escalante.parser.parsers.ConstantExpression
+import cat.pingu.escalante.parser.parsers.FunctionCall
 import cat.pingu.escalante.parser.parsers.VariableDeclaration
 import cat.pingu.escalante.tokenize.TokenType.*
 import org.objectweb.asm.ClassWriter
@@ -22,8 +23,8 @@ class JVM: Compilable {
     private val classNode = ClassNode().apply {
         visit(V1_8, ACC_PUBLIC, "Main", "", "java/lang/Object", arrayOf())
     }
-    private val flow = classNode
-        .visitMethod(ACC_PUBLIC or ACC_STATIC, "main", "([Ljava/lang/String;)V", null, arrayOf()) as MethodNode
+    private val flow = classNode.visitMethod(ACC_PUBLIC or ACC_STATIC, "main", "([Ljava/lang/String;)V", null, arrayOf()) as MethodNode
+
     private var locals = 1
 
     override fun compile(output: File, ast: List<Statement>) {
@@ -36,6 +37,7 @@ class JVM: Compilable {
     private fun visitStatement(statement: Statement) {
         when (statement) {
             is VariableDeclaration -> visitVariableDeclaration(statement)
+            is FunctionCall -> visitFunctionCall(statement)
             else -> throw IllegalStateException()
         }
     }
@@ -44,6 +46,7 @@ class JVM: Compilable {
         when (expression) {
             is BinaryExpression -> visitBinaryExpression(expression)
             is ConstantExpression -> visitConstantExpression(expression)
+            is FunctionCall -> visitFunctionCall(expression)
             else -> throw IllegalStateException()
         }
     }
@@ -74,11 +77,25 @@ class JVM: Compilable {
 
     private fun visitConstantExpression(expression: ConstantExpression) {
         when (expression.value.type) {
-            LITERAL_INT -> flow.visitLdcInsn(expression.value.raw.toInt())
+            LITERAL_INT -> visitInt(expression.value.raw.toInt())
             LITERAL_STRING -> flow.visitLdcInsn(expression.value.raw)
             LITERAL_TRUE -> flow.visitInsn(ICONST_1)
             LITERAL_FALSE -> flow.visitInsn(ICONST_0)
             else -> throw IllegalStateException()
+        }
+    }
+
+    private fun visitFunctionCall(call: FunctionCall) {
+        for (argument in call.arguments) {
+            visitExpression(argument)
+        }
+
+        when (call.name.raw) {
+            "print", "println" -> {
+                flow.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;")
+                flow.visitInsn(SWAP)
+                flow.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", call.name.raw, "(Ljava/lang/Object;)V", false)
+            }
         }
     }
 
@@ -106,5 +123,12 @@ class JVM: Compilable {
         stream.closeEntry()
 
         stream.close()
+    }
+
+    private fun visitInt(value: Int) {
+        if (value >= -1 && value <= 5) flow.visitInsn(value + 3)
+        else if (value >= Byte.MIN_VALUE && value <= Byte.MAX_VALUE) flow.visitIntInsn(BIPUSH, value)
+        else if (value >= Short.MIN_VALUE && value <= Short.MAX_VALUE) flow.visitIntInsn(SIPUSH, value)
+        else flow.visitLdcInsn(value)
     }
 }

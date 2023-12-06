@@ -30,4 +30,7 @@ object FunctionCallSyntax: Syntax<FunctionCall>({
     }
 }
 
-data class FunctionCall(private val name: Token, private val arguments: List<Expression>): Expression, Statement
+data class FunctionCall(
+    val name: Token,
+    val arguments: List<Expression>
+): Expression, Statement

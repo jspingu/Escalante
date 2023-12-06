@@ -23,7 +23,9 @@ class CompilerProcess(
 
         val tokenizer = Tokenizer(src)
         val tokens = tokenizer.getTokens()
+        println(tokens)
         val ast = parse(tokens)
+        println(ast)
 
         target.compiler.get().compile(output, ast)
     }

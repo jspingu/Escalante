@@ -25,7 +25,7 @@ class JVM: Compilable {
     }
     private val flow = classNode.visitMethod(ACC_PUBLIC or ACC_STATIC, "main", "([Ljava/lang/String;)V", null, arrayOf()) as MethodNode
 
-    private var locals = 1
+    private var locals = 0
 
     override fun compile(output: File, ast: List<Statement>) {
         ast.forEach { visitStatement(it) }
